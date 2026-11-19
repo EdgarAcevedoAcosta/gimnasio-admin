@@ -1,9 +1,3 @@
-Preguntas y Respuestas
-¿qué archivo de Angular hace el papel de main.tsx, de App.tsx y de vite.config.ts?
-  pues en orden el primero equivale a main.ts, el segundo a app.ts y el tercero a angular.json
-
-¿por qué clase() lleva paréntesis y para qué sirve track?
-  por que es un input de un objeto por lo que solo estas llamando a la clase, el track sirve para identificar cada elemento por llave unica.
 # GimnasioAdmin
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.3.0.
