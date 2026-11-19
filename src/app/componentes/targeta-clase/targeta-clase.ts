@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Clase } from '../../modelos/clase';
 import { TitleCasePipe } from '@angular/common';
 
@@ -10,4 +10,6 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class TargetaClase {
   readonly clase = input.required<Clase>();
+  readonly activa = input(false);
+  readonly seleccionar = output<Clase>();
 }
