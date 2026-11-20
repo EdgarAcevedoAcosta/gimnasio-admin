@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { TargetaClase } from './componentes/targeta-clase/targeta-clase';
 import { Catalogo } from './servicios/catalogo';
 import { FiltroCategorias } from './componentes/filtro-categorias/filtro-categorias';
@@ -9,7 +9,7 @@ import { FiltroCategorias } from './componentes/filtro-categorias/filtro-categor
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly catalogo = Inject(Catalogo);
+  protected readonly catalogo = inject(Catalogo);
 }
 //instalar -g @angular/cli
 // ng new --

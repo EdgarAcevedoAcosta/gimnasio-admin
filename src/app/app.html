@@ -40,7 +40,7 @@
       }
     </div>
     <aside class="targeta lateral">
-      @if (catalogo.seleccionada(); as c) {
+      @if (catalogo.seleccionado(); as c) {
         <img [src]="c.imagen" [alt]="c.nombre" />
         <h2>{{ c.nombre }}</h2>
         <p>{{ c.descripcion }}</p>

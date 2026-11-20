@@ -6,7 +6,7 @@ import { CLASES_LOCALES } from '../datos/clases-locales';
 export class Catalogo {
   private readonly clases = signal<Clase[]>(CLASES_LOCALES);
   readonly categoria = signal<Categoria | 'todas'>('todas');
-  readonly seleccionada = signal<Clase | null>(null);
+  readonly seleccionado = signal<Clase | null>(null);
   // Derivada
   readonly visibles = computed(() => {
     const cat = this.categoria();
@@ -18,13 +18,13 @@ export class Catalogo {
   });
   filtrar(categoria: Categoria | 'todas'): void {
     this.categoria.set(categoria);
-    const elegida = this.seleccionada();
+    const elegida = this.seleccionado();
     if (elegida && categoria !== 'todas' && elegida.categoria !== categoria) {
-      this.seleccionada.set(null);
+      this.seleccionado.set(null);
     }
   }
 
   seleccionar(clase: Clase): void {
-    this.seleccionada.update((actual) => (actual?.id === clase.id ? null : clase));
+    this.seleccionado.update((actual) => (actual?.id === clase.id ? null : clase));
   }
 }
