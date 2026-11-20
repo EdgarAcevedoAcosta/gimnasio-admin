@@ -1,3 +1,9 @@
+¿qué diferencia hay entre un signal y un computed, y cuál se parece a useState y cuál a useMemo?
+el signal se parece a useState, mientras que un computed se parece a useMemo, porque el primero guarda estado mutable y el segundo deriva valores automáticamente.
+
+¿qué pasa si el filtro hace new Catalogo() en lugar de inject(Catalogo)?
+creará una instancia nueva en cada render o cada ejecución del filtro
+
 # GimnasioAdmin
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.3.0.
