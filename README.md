@@ -1,22 +1,10 @@
-Responder: si el formulario ya valida, ¿por qué también valida el servidor?
-por que el formulario puede que su validación es muy por encima y si es que lo guarda y no puede el servidor mandaria que se creo pero realmente no existe
-Responder: ¿por qué httpResource para leer y HttpClient para crear, editar y eliminar?
-Por que creo que una nada mas puede leer informacion y el otro es para modificar por que seria muchas cosas que cargue un elemento
-Responder: ¿qué pasa si se olvida el subscribe()?
-el que esta de oyente que seria la pagina clases no cargaría la pagina es para notificar
+Responder: ¿qué diferencia hay entre un signal y un Observable?
+segun yo el signal es mas para cuando el usuario cambia algo en concreto con el que estas usando el signal, y el observable es para cuando se envian datos a la api por ejemplo
 
-Responder: ¿a qué pieza de React corresponden las rutas hijas (children), el interceptor y el guardia?
-creo que seria los Routes y las rutas protegidas
-Responder: ¿cuándo se ejecuta el guardia y por qué salir() tiene que navegar al login?
-se ejecuta cuando no tiene una cuenta en el navegador y no esta con el rol de admin, por que el usuario podria seguir modificando cosas sin el tener el permiso
-
-Responder: ¿por qué el estado del formulario no se puede observar con un computed()?
-por que es un estado como tal y ese no se puede cambiar de estado 
-Responder: ¿qué diferencia hay entre canActivate y canDeactivate, y qué casos no cubre la guarda de salida?
-canActivate controla si puedes entrar a una ruta, mientras que canDeactivate controla si puedes salir de ella
-Opcional, si hiciste el detalle: responder ¿por qué la ruta de crear va antes que la del id?
-por que en la api se crean de esa forma y si en caso se pondría primero no se crearia
-
+Responder: ¿qué problema evita switchMap y qué pasaría con mergeMap?
+switchMap evita resultados obsoletos cancelando automáticamente observables anteriores, mientras que mergeMap los mantiene activos
+Responder: ¿qué pasa si se quita catchError y la API se apaga?
+el observable se rompe y emite un error deteniendo la secuencia y cancelando la suscripción.
 
 # GimnasioAdmin
 
