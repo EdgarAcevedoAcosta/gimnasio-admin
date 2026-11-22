@@ -1,14 +1,17 @@
-import { JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { Categoria, CATEGORIAS, ClaseNueva } from '../../modelos/clase';
+import { Router, RouterLink } from '@angular/router';
+import { Categoria, CATEGORIAS } from '../../modelos/clase';
 import { API_URL } from '../../config';
 import { multiploDe } from '../../validadores/multiplo-de';
+import { ClasesApi } from '../../servicios/clases-api';
+import { Catalogo } from '../../servicios/catalogo';
+import { HttpErrorResponse } from '@angular/common/http';
+import { mensajeDeApi, mensajesDelCuerpo } from '../../servicios/errores';
 const IMAGENES = Array.from({ length: 8 }, (_, i) => `/img/clase-0${i + 1}.jpg`);
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, JsonPipe],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-formulario-clase',
   styleUrl: './formulario-clase.css',
   templateUrl: './formulario-clase.html',
@@ -16,8 +19,13 @@ const IMAGENES = Array.from({ length: 8 }, (_, i) => `/img/clase-0${i + 1}.jpg`)
 export class FormularioClase {
   protected readonly categorias = CATEGORIAS;
   protected readonly imagenes = IMAGENES;
-  protected readonly lista = signal<ClaseNueva | null>(null);
   protected readonly apiUrl = API_URL;
+  private readonly api = inject(ClasesApi);
+  private readonly catalogo = inject(Catalogo);
+  private readonly router = inject(Router);
+
+  protected readonly guardando = signal(false);
+  protected readonly erroresServidor = signal<String[]>([]);
 
   protected readonly form = inject(FormBuilder).nonNullable.group({
     nombre: ['', [Validators.required, Validators.maxLength(80)]],
@@ -35,11 +43,21 @@ export class FormularioClase {
   protected guardar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.lista.set(null);
+
       return;
     }
-    const datos = this.form.getRawValue();
-    console.log('esto es lo que se va a mandar en la api', datos);
-    this.lista.set(datos);
+    this.guardando.set(true);
+    this.erroresServidor.set([]);
+    this.api.crear(this.form.getRawValue()).subscribe({
+      next: () => {
+        this.catalogo.recargar();
+        this.router.navigate(['/clases']);
+      },
+      error: (e: HttpErrorResponse) => {
+        const mensajes = e.status === 400 ? mensajesDelCuerpo(e.error) : [];
+        this.erroresServidor.set(mensajes.length ? mensajes : [mensajeDeApi(e)]);
+        this.guardando.set(false);
+      },
+    });
   }
 }

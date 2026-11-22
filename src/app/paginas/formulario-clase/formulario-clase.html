@@ -1,4 +1,11 @@
 <a routerLink="/clases"><- Cancelar</a>
+@if (erroresServidor().length) {
+  <div class="aviso aviso--error">
+    @for (e of erroresServidor(); track e) {
+      <div>{{ e }}</div>
+    }
+  </div>
+}
 <form class="tarjeta formulario" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
   <div class="campo">
     <label for="nombre">Nombre</label>
@@ -34,7 +41,7 @@
     }
   </div>
   <div class="campo">
-    <label for="descripcion">Descripci+on</label>
+    <label for="descripcion">Descripcion</label>
     <textarea formControlName="descripcion" id="descripcion" rows="3"></textarea>
     <span class="contenedor">{{ f.descripcion.value.length }}/225</span>
     @if (f.descripcion.touched && f.descripcion.hasError('required')) {
@@ -51,12 +58,8 @@
     <img [src]="apiUrl + f.imagen.value" alt="" class="vista-previa" />
   </div>
   <div class="acciones">
-    <button class="boton" type="submit">Guardar</button>
+    <button class="boton" type="submit" [disabled]="guardando()">
+      {{ guardando() ? 'Guardando...' : 'Guardar' }}
+    </button>
   </div>
 </form>
-@if (lista(); as datos) {
-  <div class="aviso" style="margin-top: 1rem">
-    El Formulario es Valido esto se Mandaria a la API
-    <pre>{{ datos | json }}</pre>
-  </div>
-}

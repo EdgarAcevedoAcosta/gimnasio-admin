@@ -1,10 +1,20 @@
 import { computed, Service, signal } from '@angular/core';
-import { Categoria, Clase } from '../modelos/clase';
-import { CLASES_LOCALES } from '../datos/clases-locales';
+import { Categoria, Clase, Sobre } from '../modelos/clase';
+import { httpResource } from '@angular/common/http';
+import { API_URL } from '../config';
+import { mensajeDeApi } from './errores';
 
 @Service()
 export class Catalogo {
-  private readonly clases = signal<Clase[]>(CLASES_LOCALES);
+  //{data:meta}
+  private readonly recurso = httpResource<Sobre<Clase[]>>(() => `${API_URL}/clases`);
+  private readonly clases = computed(() => this.recurso.value()?.data ?? []);
+
+  readonly cargando = computed(() => this.recurso.isLoading());
+  readonly error = computed(() => {
+    const e = this.recurso.error();
+    return e ? mensajeDeApi(e) : null;
+  });
   readonly categoria = signal<Categoria | 'todas'>('todas');
   readonly seleccionado = signal<Clase | null>(null);
   // Derivada
@@ -26,5 +36,9 @@ export class Catalogo {
 
   seleccionar(clase: Clase): void {
     this.seleccionado.update((actual) => (actual?.id === clase.id ? null : clase));
+  }
+  recargar(): void {
+    this.seleccionado.set(null);
+    this.recurso.reload();
   }
 }

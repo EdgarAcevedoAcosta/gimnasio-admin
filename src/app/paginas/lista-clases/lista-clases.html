@@ -19,23 +19,33 @@
   </div>
 </section>
 <app-filtro-categorias></app-filtro-categorias>
-<div class="tablero">
+@if (catalogo.error(); as error) {
+  <div class="aviso--error">{{ error }}</div>
+} @else if (catalogo.cargando()) {
   <div class="rejilla">
-    @for (clase of catalogo.visibles(); track clase.id) {
-      <app-targeta-clase
-        [clase]="clase"
-        [activa]="clase.id === catalogo.seleccionado()?.id"
-        (seleccionar)="catalogo.seleccionar($event)"
-      ></app-targeta-clase>
-    } @empty {
-      <p class="vacio">No hay Clases Disponibles</p>
-    }
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
   </div>
-  <aside class="targeta lateral">
-    @if (catalogo.seleccionado(); as c) {
-      <img [src]="c.imagen" [alt]="c.nombre" />
-      <h2>{{ c.nombre }}</h2>
-      <p>{{ c.descripcion }}</p>
-    }
-  </aside>
-</div>
+} @else {
+  <div class="tablero">
+    <div class="rejilla">
+      @for (clase of catalogo.visibles(); track clase.id) {
+        <app-targeta-clase
+          [clase]="clase"
+          [activa]="clase.id === catalogo.seleccionado()?.id"
+          (seleccionar)="catalogo.seleccionar($event)"
+        ></app-targeta-clase>
+      } @empty {
+        <p class="vacio">No hay Clases Disponibles</p>
+      }
+    </div>
+    <aside class="targeta lateral">
+      @if (catalogo.seleccionado(); as c) {
+        <img [src]="apiUrl + c.imagen" [alt]="c.nombre" />
+        <h2>{{ c.nombre }}</h2>
+        <p>{{ c.descripcion }}</p>
+      }
+    </aside>
+  </div>
+}
