@@ -1,0 +1,65 @@
+<a routerLink="/clases" class="boton">Cancelar</a>
+@if (erroresServidor().length) {
+  <div class="aviso aviso--error">
+    @for (e of erroresServidor(); track e) {
+      <div>{{ e }}</div>
+    }
+  </div>
+}
+<form class="tarjeta formulario" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <div class="campo">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" formControlName="nombre" />
+    @if (f.nombre.touched && f.nombre.hasError('required')) {
+      <span class="error">El Nombre es Obligatorio</span>
+    }
+    @if (f.nombre.hasError('maxlength')) {
+      <span class="error">El Nombre es de Maximo 80 Caracteres</span>
+    }
+  </div>
+  <div class="fila">
+    <div class="campo">
+      <label for="categoria">Categoria</label>
+      <select formGroupName="categoria" id="categoria">
+        @for (c of categorias; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="campo">
+    <label for="duracionMin">Duración (Minutos)</label>
+    <input id="duracionMin" type="number" formControlName="duracionMin" />
+    @if (f.duracionMin.touched && f.duracionMin.hasError('required')) {
+      <span class="error">Escribe la Duración</span>
+    }
+    @if (f.duracionMin.touched && f.duracionMin.hasError('min')) {
+      <span class="error">La Duración Minima es de 10 Minutos</span>
+    }
+    @if (f.duracionMin.touched && f.duracionMin.hasError('multiploDe')) {
+      <span class="error">Escribe la Duración va eb Bloques de 6 Minutos (45,50,55...)</span>
+    }
+  </div>
+  <div class="campo">
+    <label for="descripcion">Descripcion</label>
+    <textarea formControlName="descripcion" id="descripcion" rows="3"></textarea>
+    <span class="contenedor">{{ f.descripcion.value.length }}/225</span>
+    @if (f.descripcion.touched && f.descripcion.hasError('required')) {
+      <span class="error">La Descripción es Obligatoria.</span>
+    }
+  </div>
+  <div class="campo">
+    <label for="imagen">Imagen</label>
+    <select formControlName="imagen" id="imagen">
+      @for (img of imagenes; track img) {
+        <option [value]="img">{{ img }}</option>
+      }
+    </select>
+    <img [src]="apiUrl + f.imagen.value" alt="" class="vista-previa" />
+  </div>
+  <div class="acciones">
+    <button class="boton" type="submit" [disabled]="guardando()">
+      {{ guardando() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</form>

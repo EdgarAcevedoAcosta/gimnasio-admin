@@ -1,0 +1,73 @@
+import { computed, inject, Service, signal } from '@angular/core';
+import { Categoria, Clase, Sobre } from '../modelos/clase';
+import { httpResource } from '@angular/common/http';
+import { API_URL } from '../config';
+import { mensajeDeApi } from './errores';
+import { BehaviorSubject, catchError, map, of, startWith, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ClasesApi } from './clases-api';
+
+@Service()
+export class Catalogo {
+  //{data:meta}
+  private readonly recurso = httpResource<Sobre<Clase[]>>(() => `${API_URL}/clases`);
+  private readonly clases = computed(() => this.recurso.value()?.data ?? []);
+  private readonly api = inject(ClasesApi);
+  private readonly _texto = signal('');
+  readonly texto = this._texto.asReadonly();
+
+  readonly cargando = computed(() => this.recurso.isLoading());
+  readonly error = computed(() => {
+    const e = this.recurso.error();
+    return e ? mensajeDeApi(e) : null;
+  });
+  readonly categoria = signal<Categoria | 'todas'>('todas');
+  readonly seleccionado = signal<Clase | null>(null);
+  // Derivada
+  readonly visibles = computed(() => {
+    const cat = this.categoria();
+    const todas = this.clases();
+    return cat === 'todas' ? todas : todas.filter((c) => c.categoria === cat);
+  });
+  readonly minutosTotales = computed(() => {
+    return this.visibles().reduce((suma, c) => suma + c.duracionMin, 0);
+  });
+  filtrar(categoria: Categoria | 'todas'): void {
+    this.categoria.set(categoria);
+    const elegida = this.seleccionado();
+    if (elegida && categoria !== 'todas' && elegida.categoria !== categoria) {
+      this.seleccionado.set(null);
+    }
+  }
+
+  seleccionar(clase: Clase): void {
+    this.seleccionado.update((actual) => (actual?.id === clase.id ? null : clase));
+  }
+  recargar(): void {
+    this.seleccionado.set(null);
+    this.busquedas.next(this.busquedas.value);
+    this.recurso.reload();
+  }
+
+  private readonly busquedas = new BehaviorSubject<string>('');
+  private readonly resultado = toSignal(
+    this.busquedas.pipe(
+      switchMap((q) =>
+        this.api.listar(q).pipe(
+          map((clases): Resultado => ({ cargando: false, error: null, clases })),
+          catchError((e) => of<Resultado>({ cargando: false, error: mensajeDeApi(e), clases: [] })),
+          startWith<Resultado>({ cargando: false, error: null, clases: [] }),
+        ),
+      ),
+    ),
+    { initialValue: { cargando: true, error: null, clases: [] } },
+  );
+  buscar(texto: string): void {
+    (this._texto.set(texto), this.seleccionado.set(null), this.busquedas.next(texto));
+  }
+}
+interface Resultado {
+  cargando: boolean;
+  error: string | null;
+  clases: Clase[];
+}

@@ -1,0 +1,58 @@
+<div class="encabezado">
+  <h1>Catalogo de Clases</h1>
+  <p>Estos datos son del Archivo local</p>
+  <a routerLink="/clases/nueva" class="boton">+ Nueva Clase</a>
+</div>
+<section class="resumen">
+  <div class="resumen__dato">
+    <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
+    <span class="resumen__texto">Clases en el Catalogo</span>
+  </div>
+  <div class="resumen__dato">
+    <span class="resumen__numero">{{ catalogo.minutosTotales() ?? 0 }}</span>
+    <span class="resumen__texto">Minutos a la Semana</span>
+  </div>
+</section>
+<div class="buscador">
+  <input type="search" [formControl]="busqueda" placeholder="Buscar por Nombre" />
+  <span class="buscador__estado">
+    @if (catalogo.cargando()) {
+      Buscando...
+    }
+  </span>
+</div>
+<app-filtro-categorias></app-filtro-categorias>
+@if (catalogo.error(); as error) {
+  <div class="aviso--error">{{ error }}</div>
+} @else if (catalogo.cargando()) {
+  <div class="rejilla">
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
+  </div>
+} @else {
+  <div class="tablero">
+    <div class="rejilla">
+      @for (clase of catalogo.visibles(); track clase.id) {
+        <app-targeta-clase
+          [clase]="clase"
+          [activa]="clase.id === catalogo.seleccionado()?.id"
+          (seleccionar)="catalogo.seleccionar($event)"
+        ></app-targeta-clase>
+      } @empty {
+        <p class="vacio">No hay Clases Disponibles</p>
+      }
+    </div>
+    <aside class="targeta lateral">
+      @if (catalogo.seleccionado(); as c) {
+        <img [src]="apiUrl + c.imagen" [alt]="c.nombre" />
+        <h2>{{ c.nombre }}</h2>
+        <p>{{ c.descripcion }}</p>
+        <div class="actiones">
+          <a [routerLink]="['/clases', c.id, 'editar']" class="boton">Editar</a>
+          <button (click)="eliminar(c.id)">Eliminar</button>
+        </div>
+      }
+    </aside>
+  </div>
+}
