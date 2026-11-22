@@ -1,18 +1,21 @@
-Responder: ¿qué pieza de React Router corresponde a router-outlet, a routerLink y a routerLinkActive?
-en react el Router equivale al <Outlet />, routerLink a <Link />, y routerLinkActive a NavLink
+Responder: si el formulario ya valida, ¿por qué también valida el servidor?
+por que el formulario puede que su validación es muy por encima y si es que lo guarda y no puede el servidor mandaria que se creo pero realmente no existe
+Responder: ¿por qué httpResource para leer y HttpClient para crear, editar y eliminar?
+Por que creo que una nada mas puede leer informacion y el otro es para modificar por que seria muchas cosas que cargue un elemento
+Responder: ¿qué pasa si se olvida el subscribe()?
+el que esta de oyente que seria la pagina clases no cargaría la pagina es para notificar
 
-Responder: ¿por qué la ruta comodín (**) va al final y la ruta vacía necesita pathMatch: 'full'?
-la ruta comodín va al final porque coincide con cualquier URL, y la ruta vacía requiere pathMatch: 'full' para evitar que coincida parcialmente con todas las rutas.
+Responder: ¿a qué pieza de React corresponden las rutas hijas (children), el interceptor y el guardia?
+creo que seria los Routes y las rutas protegidas
+Responder: ¿cuándo se ejecuta el guardia y por qué salir() tiene que navegar al login?
+se ejecuta cuando no tiene una cuenta en el navegador y no esta con el rol de admin, por que el usuario podria seguir modificando cosas sin el tener el permiso
 
-Responder: ¿dónde vive el valor de un campo en un formulario reactivo y en qué se diferencia del useState de React?
-en el formulario reactivo el valor vive dentro de un árbol de objetos de FormControl/FormGroup, mientras que el useState vive en el estado del componente, que se reemplaza mediante actualizaciones
-Responder: ¿qué regresa un validador propio cuando el valor es válido y cuando no, y cómo se relaciona con hasError?
-manda el error si es que lo tiene mal, y si es valido no manda nada, lo que hace el hasError establece que es lo que va a ser el usuario para que mande el error es como establecerlo 
-
-Responder: ¿qué cambió en el servicio del catálogo y por qué ningún componente se enteró?
-cambio en que ahora se "encapsulara" en secciones para que no todas entren al mismo catálogo, por así decir que se movieron para que clases entre en un solo catálogo, no se enteraron por que se utilizo en otro componente el cual estará mas reservado.
-Responder: ¿por qué no hizo falta iniciar sesión para leer el catálogo?
-por qué en le app se va a restringir para que nada más sea para el admin, y como actualmente estamos diseñándolo pues no es tan necesario porque nos va a pedir el usuario cada que entremos  
+Responder: ¿por qué el estado del formulario no se puede observar con un computed()?
+por que es un estado como tal y ese no se puede cambiar de estado 
+Responder: ¿qué diferencia hay entre canActivate y canDeactivate, y qué casos no cubre la guarda de salida?
+canActivate controla si puedes entrar a una ruta, mientras que canDeactivate controla si puedes salir de ella
+Opcional, si hiciste el detalle: responder ¿por qué la ruta de crear va antes que la del id?
+por que en la api se crean de esa forma y si en caso se pondría primero no se crearia
 
 
 # GimnasioAdmin
