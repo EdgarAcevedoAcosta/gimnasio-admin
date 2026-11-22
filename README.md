@@ -1,8 +1,19 @@
-¿qué diferencia hay entre un signal y un computed, y cuál se parece a useState y cuál a useMemo?
-el signal se parece a useState, mientras que un computed se parece a useMemo, porque el primero guarda estado mutable y el segundo deriva valores automáticamente.
+Responder: ¿qué pieza de React Router corresponde a router-outlet, a routerLink y a routerLinkActive?
+en react el Router equivale al <Outlet />, routerLink a <Link />, y routerLinkActive a NavLink
 
-¿qué pasa si el filtro hace new Catalogo() en lugar de inject(Catalogo)?
-creará una instancia nueva en cada render o cada ejecución del filtro
+Responder: ¿por qué la ruta comodín (**) va al final y la ruta vacía necesita pathMatch: 'full'?
+la ruta comodín va al final porque coincide con cualquier URL, y la ruta vacía requiere pathMatch: 'full' para evitar que coincida parcialmente con todas las rutas.
+
+Responder: ¿dónde vive el valor de un campo en un formulario reactivo y en qué se diferencia del useState de React?
+en el formulario reactivo el valor vive dentro de un árbol de objetos de FormControl/FormGroup, mientras que el useState vive en el estado del componente, que se reemplaza mediante actualizaciones
+Responder: ¿qué regresa un validador propio cuando el valor es válido y cuando no, y cómo se relaciona con hasError?
+manda el error si es que lo tiene mal, y si es valido no manda nada, lo que hace el hasError establece que es lo que va a ser el usuario para que mande el error es como establecerlo 
+
+Responder: ¿qué cambió en el servicio del catálogo y por qué ningún componente se enteró?
+cambio en que ahora se "encapsulara" en secciones para que no todas entren al mismo catálogo, por así decir que se movieron para que clases entre en un solo catálogo, no se enteraron por que se utilizo en otro componente el cual estará mas reservado.
+Responder: ¿por qué no hizo falta iniciar sesión para leer el catálogo?
+por qué en le app se va a restringir para que nada más sea para el admin, y como actualmente estamos diseñándolo pues no es tan necesario porque nos va a pedir el usuario cada que entremos  
+
 
 # GimnasioAdmin
 
