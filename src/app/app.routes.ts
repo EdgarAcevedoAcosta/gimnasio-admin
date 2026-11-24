@@ -22,6 +22,12 @@ export const routes: Routes = [
           import('./paginas/formulario-clase/formulario-clase').then((m) => m.FormularioClase),
         title: 'Nueva Clase - Admin',
       },
+      {
+        path: 'clases/:id/editar',
+        loadComponent: () =>
+          import('./paginas/formulario-clase/formulario-clase').then((m) => m.FormularioClase),
+        title: 'Editar Clase - Admin',
+      },
       { path: '', redirectTo: 'clases', pathMatch: 'full' },
     ],
   },

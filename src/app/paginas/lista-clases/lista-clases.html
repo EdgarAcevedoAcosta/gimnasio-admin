@@ -3,11 +3,6 @@
   <p>Estos datos son del Archivo local</p>
   <a routerLink="/clases/nueva" class="boton">+ Nueva Clase</a>
 </div>
-<!--
-  <div class="acciones">
-    <button class="boton boton--secundario" (click)="vaciar()">Vaciar</button>
-    <button class="boton" (click)="restaurar()">Restaurar</button>
-  </div>-->
 <section class="resumen">
   <div class="resumen__dato">
     <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
@@ -18,6 +13,14 @@
     <span class="resumen__texto">Minutos a la Semana</span>
   </div>
 </section>
+<div class="buscador">
+  <input type="search" [formControl]="busqueda" placeholder="Buscar por Nombre" />
+  <span class="buscador__estado">
+    @if (catalogo.cargando()) {
+      Buscando...
+    }
+  </span>
+</div>
 <app-filtro-categorias></app-filtro-categorias>
 @if (catalogo.error(); as error) {
   <div class="aviso--error">{{ error }}</div>
@@ -45,6 +48,10 @@
         <img [src]="apiUrl + c.imagen" [alt]="c.nombre" />
         <h2>{{ c.nombre }}</h2>
         <p>{{ c.descripcion }}</p>
+        <div class="actiones">
+          <a [routerLink]="['/clases', c.id, 'editar']" class="boton">Editar</a>
+          <button (click)="eliminar(c.id)" class="boton">Eliminar</button>
+        </div>
       }
     </aside>
   </div>
